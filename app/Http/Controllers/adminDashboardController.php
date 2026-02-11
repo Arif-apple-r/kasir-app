@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 
-class adminDashboardController extends Controller
+class AdminDashboardController extends Controller
 {
     public function index()
     {

@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['role:admin'])->group(function () {
         Route::resource('produk', ProdukController::class);
+        
         Route::resource('karyawan', KaryawanController::class);
 
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
