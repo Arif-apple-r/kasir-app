@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Laravel\Mcp\Enums\Role;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('role', ['admin', 'karyawan', 'pelanggan'])->default('pelanggan');
+            $table->enum('gender', ['laki-laki', 'perempuan', 'quaso'])->nullable();
+            $table->string('no_telp')->nullable();
+            $table->text('alamat')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['role', 'gender', 'no_telp', 'alamat']);
+        });
+    }
+};
