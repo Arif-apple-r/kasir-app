@@ -4,8 +4,10 @@
         <select name="produk_id[]" class="produk-select w-full border p-2 rounded-lg">
             <option value="">-- pilih produk --</option>
             @foreach ($produk as $p)
-                <option value="{{ $p->id }}" data-harga="{{ $p->harga }}">
-                    {{ $p->nama }} - Rp {{ number_format($p->harga, 0, ',', '.') }}
+                <option value="{{ $p->id }}"
+                        data-harga="{{ $p->harga }}"
+                        data-stok="{{ $p->stok }}">
+                    {{ $p->nama }} - Stok: {{ $p->stok }} - Rp {{ number_format($p->harga, 0, ',', '.') }}
                 </option>
             @endforeach
         </select>

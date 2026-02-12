@@ -16,7 +16,10 @@ class PenjualanController extends Controller
 
     public function index()
     {
-        $penjualan = Penjualan::with('pelanggan', 'karyawan')->latest()->get();
+        $penjualan = Penjualan::selesai()
+            ->with('pelanggan', 'karyawan')
+            ->latest()
+            ->get();
 
         return view('penjualan.index', compact('penjualan'));
     }
@@ -38,11 +41,14 @@ class PenjualanController extends Controller
             'pelanggan_id' => 'nullable|exists:users,id',
         ]);
 
-        // ====== 1. Hitung total transaksi ======
+        // ====== 1. Validasi stok & Hitung total transaksi ======
 
         $total = 0;
         foreach ($request->produk_id as $i => $produkId) {
             $produk = Produk::find($produkId);
+            if ($produk->stok < $request->jumlah[$i]) {
+                return back()->with('error', "Stok produk {$produk->nama} tidak mencukupi.");
+            }
             $subtotal = $produk->harga * $request->jumlah[$i];
             $total += $subtotal;
         }
@@ -79,7 +85,11 @@ class PenjualanController extends Controller
             $produk->save();
         }
 
-        return redirect()->route('penjualan.show', $penjualan->id)
+        $routeName = (Auth::user()->role === 'karyawan')
+            ? 'kasir.penjualan.show'
+            : 'penjualan.show';
+
+        return redirect()->route($routeName, $penjualan->id)
             ->with('success', 'Transaksi berhasil dibuat!');
     }
 
@@ -87,7 +97,35 @@ class PenjualanController extends Controller
     public function show($id)
     {
         $penjualan = Penjualan::with('detail.produk', 'pelanggan', 'karyawan')->findOrFail($id);
+
+        if (Auth::check() && Auth::user()->role === 'karyawan') {
+            if ($penjualan->karyawan_id !== Auth::id()) {
+                abort(403, 'Akses ditolak bro!');
+            }
+        }
         return view('penjualan.show', compact('penjualan'));
+    }
+
+    public function print($id)
+    {
+        $penjualan = Penjualan::with('detail.produk', 'pelanggan', 'karyawan')->findOrFail($id);
+
+        if (Auth::check() && Auth::user()->role === 'karyawan') {
+            if ($penjualan->karyawan_id !== Auth::id()) {
+                abort(403, 'Akses ditolak bro!');
+            }
+        }
+        return view('penjualan.print', compact('penjualan'));
+    }
+
+    public function printAll()
+    {
+        $penjualan = Penjualan::selesai()
+            ->with('pelanggan', 'karyawan')
+            ->latest()
+            ->get();
+
+        return view('penjualan.printAll', compact('penjualan'));
     }
 
     // Menampilkan halaman utama Kasir dengan 2 data: Produk (untuk POS) dan Pesanan Pending
@@ -102,7 +140,31 @@ class PenjualanController extends Controller
                             ->latest()
                             ->get();
 
-        return view('kasir.index', compact('produk', 'pelanggan', 'pesananPending'));
+        $todayTotal = Penjualan::selesai()
+            ->where('karyawan_id', Auth::id())
+            ->whereDate('tanggal_penjualan', today())
+            ->sum('total_harga');
+
+        $todayCount = Penjualan::selesai()
+            ->where('karyawan_id', Auth::id())
+            ->whereDate('tanggal_penjualan', today())
+            ->count();
+
+        $transaksiTerbaruSaya = Penjualan::selesai()
+            ->with('pelanggan')
+            ->where('karyawan_id', Auth::id())
+            ->latest()
+            ->limit(10)
+            ->get();
+
+        return view('kasir.index', compact(
+            'produk',
+            'pelanggan',
+            'pesananPending',
+            'todayTotal',
+            'todayCount',
+            'transaksiTerbaruSaya'
+        ));
     }
 
     // Fungsi untuk Kasir menyetujui pesanan online

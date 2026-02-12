@@ -15,10 +15,14 @@ class AdminDashboardController extends Controller
         $totalProduk = Produk::count();
         $totalPelanggan = User::where('role', 'pelanggan')->count();
         $totalKaryawan = User::where('role', 'karyawan')->count();
-        $penjualanHariIni = Penjualan::whereDate('tanggal_penjualan', today())->sum('total_harga');
+        $penjualanHariIni = Penjualan::selesai()
+            ->whereDate('tanggal_penjualan', today())
+            ->sum('total_harga');
+        $pendingCount = Penjualan::pending()->count();
 
         // Penjualan terbaru
-        $penjualanTerbaru = Penjualan::with('pelanggan', 'karyawan')
+        $penjualanTerbaru = Penjualan::selesai()
+            ->with('pelanggan', 'karyawan')
             ->orderBy('id', 'DESC')
             ->limit(5)
             ->get();
@@ -28,7 +32,8 @@ class AdminDashboardController extends Controller
             'totalPelanggan',
             'totalKaryawan',
             'penjualanHariIni',
-            'penjualanTerbaru'
+            'penjualanTerbaru',
+            'pendingCount'
         ));
     }
 }

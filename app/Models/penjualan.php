@@ -17,6 +17,12 @@ class Penjualan extends Model
         'tanggal_penjualan',
     ];
 
+    protected $casts = [
+        'tanggal_penjualan' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function pelanggan()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -30,5 +36,15 @@ class Penjualan extends Model
     public function detail()
     {
         return $this->hasMany(DetailPenjualan::class);
+    }
+
+    public function scopeSelesai($query)
+    {
+        return $query->where('status_pesanan', 'selesai');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status_pesanan', 'pending');
     }
 }

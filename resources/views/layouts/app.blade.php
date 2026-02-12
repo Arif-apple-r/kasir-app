@@ -27,6 +27,9 @@
         @if(Auth::check() && Auth::user()->role === 'admin')
             @include('layouts.partials.adminsidebar')
         @endif
+        @if(Auth::check() && Auth::user()->role === 'karyawan')
+            @include('layouts.partials.karyawansidebar')
+        @endif
         {{-- ========== END SIDEBAR ========== --}}
 
         {{-- ========== MAIN CONTENT ========== --}}
@@ -35,11 +38,7 @@
         </main>
     </div>
 
-    @if(!Auth::check() || Auth::user()->role === 'karyawan')
-        {{-- ========== SIDEBAR KARYAWAN ========== --}}
-        @include('layouts.partials.karyawansidebar')
-        {{-- ========== END SIDEBAR ========== --}}
-    @endif
+    
 
     <!-- LOGOUT MODAL -->
     <div id="logoutModal"

@@ -58,13 +58,29 @@
                                     Edit
                                 </a>
 
-                                <form action="{{ route('user.destroy', $u->id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Yakin mau hapus?')">
+                                {{-- <form action="{{ route('user.destroy', $u->id) }}"
+                                      method="POST">
                                     @csrf
                                     @method('DELETE')
 
-                                    <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                    <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                                    onclick="openDeleteModal(this)"
+                                    data-name="{{ $u->name }}"
+                                    class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                     Hapus
+                                    </button>
+                                </form> --}}
+
+                                <form action="{{ route('user.destroy', $u->id) }}"
+                                method="POST"
+                                    class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="button"
+                                        onclick="openDeleteModal(this)"
+                                        data-name="{{ $u->name }}"
+                                        class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                                         Hapus
                                     </button>
                                 </form>

@@ -37,13 +37,17 @@ Route::middleware('auth')->group(function () {
             ->name('admin.dashboard');
     });
 
-    Route::middleware(['role:admin,karyawan'])->group(function () {
+    Route::middleware(['role:admin'])->group(function () {
         Route::resource('penjualan', PenjualanController::class);
+        Route::get('/penjualan/{id}/print', [PenjualanController::class, 'print'])->name('penjualan.print');
+        Route::get('/penjualan-all/print', [PenjualanController::class, 'printAll'])->name('penjualan.printAll');
     });
 
     Route::middleware(['auth', 'role:karyawan'])->group(function () {
         Route::get('/kasir', [PenjualanController::class, 'kasir'])->name('kasir.index');
         Route::post('/kasir', [PenjualanController::class, 'store'])->name('kasir.store');
+        Route::get('/kasir/penjualan/{id}', [PenjualanController::class, 'show'])->name('kasir.penjualan.show');
+        Route::get('/kasir/penjualan/{id}/print', [PenjualanController::class, 'print'])->name('kasir.penjualan.print');
         Route::get('/kasir-row', function () {
             $produk = \App\Models\Produk::all();
             return view('kasir.partials.row', compact('produk'))->render();
