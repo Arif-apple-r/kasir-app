@@ -26,19 +26,21 @@
             Penjualan
         </a>
 
-        <a href="{{ route('karyawan.index') }}"
+        <a href="{{ route('user.index') }}"
         class="block px-4 py-2 rounded-lg
-                {{ request()->routeIs('karyawan.*') ? 'bg-gray-700 text-white' : 'hover:bg-gray-700' }}">
-            Karyawan
+                {{ request()->routeIs('user.*') ? 'bg-gray-700 text-white' : 'hover:bg-gray-700' }}">
+            User
         </a>
     </nav>
 
     {{-- LOGOUT BUTTON --}}
-    <form method="POST" action="{{ route('logout') }}" class="mt-6">
+    <form method="POST" action="{{ route('logout') }}" class="mt-6 px-4 logout-form">
         @csrf
-        <button type="submit"
-                class="block w-full text-left px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold">
+        <button type="button"
+            onclick="openLogoutModal(this)"
+            class="w-full py-2 rounded-lg bg-red-600 hover:bg-red-700 transition duration-200 text-white font-semibold shadow-md">
             Logout
         </button>
     </form>
+
 </aside>

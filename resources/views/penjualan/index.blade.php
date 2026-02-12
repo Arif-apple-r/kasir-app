@@ -16,6 +16,7 @@
                         <th class="py-3 px-4 text-left">Total</th>
                         <th class="py-3 px-4 text-left">Tanggal</th>
                         <th class="py-3 px-4 text-left">Aksi</th>
+                        <th class="py-3 px-4 text-left">Status</th>
                     </tr>
                 </thead>
 
@@ -46,6 +47,18 @@
                                class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
                                 Detail
                             </a>
+                        </td>
+
+                        <td class="py-3 px-4">
+                            @if ($p->status == 'lunas')
+                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
+                                    Lunas
+                                </span>
+                            @else
+                                <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">
+                                    Belum Lunas
+                                </span>
+                            @endif
                         </td>
 
                     </tr>

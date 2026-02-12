@@ -53,8 +53,8 @@
                         @foreach ($penjualanTerbaru as $p)
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="px-4 py-2">{{ $p->id }}</td>
-                            <td class="px-4 py-2">{{ $p->pelanggan->name ?? 'Umum' }}</td>
-                            <td class="px-4 py-2">{{ $p->karyawan->name }}</td>
+                            <td class="px-4 py-2">{{ optional($p->pelanggan)->name ?? 'Umum' }}</td>
+                            <td class="px-4 py-2">{{ optional($p->karyawan)->name ?? 'Tidak Ada' }}</td>
                             <td class="px-4 py-2">
                                 Rp {{ number_format($p->total_harga, 0, ',', '.') }}
                             </td>

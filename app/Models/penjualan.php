@@ -4,14 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class penjualan extends Model
+class Penjualan extends Model
 {
-    protected $table = "penjualan";
+    protected $table = 'penjualan';
+
     protected $fillable = [
         'user_id',
         'karyawan_id',
         'total_harga',
-        'tanggal',
+        'metode_pembayaran',
+        'status_pesanan',
+        'tanggal_penjualan',
     ];
 
     public function pelanggan()
@@ -26,6 +29,6 @@ class penjualan extends Model
 
     public function detail()
     {
-        return $this->hasMany(DetailPenjualan::class, 'penjualan_id');
+        return $this->hasMany(DetailPenjualan::class);
     }
 }

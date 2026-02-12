@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\produk;
+use App\Models\Produk;
 
 class ProdukController extends Controller
 {
@@ -60,8 +60,6 @@ class ProdukController extends Controller
     // Simpan perubahan edit
     public function update(Request $request, $id)
     {
-
-        // Validasi input
         $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',

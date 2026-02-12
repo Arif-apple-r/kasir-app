@@ -42,19 +42,24 @@
                             <div class="flex space-x-2">
 
                                 <a href="{{ route('produk.edit', $p->id) }}"
-                                   class="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700">
+                                   class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
                                     Edit
                                 </a>
 
-                                <form action="{{ route('produk.destroy', $p->id) }}" method="POST"
-                                      onsubmit="return confirm('Anda yakin ingin menghapus?');">
+                                <form action="{{ route('produk.destroy', $p->id) }}"
+                                    method="POST"
+                                    class="delete-form">
                                     @csrf
                                     @method('DELETE')
 
-                                    <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                    <button type="button"
+                                        onclick="openDeleteModal(this)"
+                                        data-name="{{ $p->nama }}"
+                                        class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                                         Hapus
                                     </button>
                                 </form>
+
 
                             </div>
                         </td>

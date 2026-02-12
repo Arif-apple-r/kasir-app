@@ -90,13 +90,32 @@ class PenjualanController extends Controller
         return view('penjualan.show', compact('penjualan'));
     }
 
+    // Menampilkan halaman utama Kasir dengan 2 data: Produk (untuk POS) dan Pesanan Pending
     public function kasir()
     {
-        $produk = Produk::all();
+        $produk = Produk::where('stok', '>', 0)->get();
         $pelanggan = User::where('role', 'pelanggan')->get();
 
-        return view('kasir.index', compact('produk', 'pelanggan'));
+        // Ambil pesanan online yang statusnya masih pending
+        $pesananPending = Penjualan::with('pelanggan')
+                            ->where('status_pesanan', 'pending')
+                            ->latest()
+                            ->get();
+
+        return view('kasir.index', compact('produk', 'pelanggan', 'pesananPending'));
     }
 
+    // Fungsi untuk Kasir menyetujui pesanan online
+    public function konfirmasiPesanan($id)
+    {
+        $penjualan = Penjualan::findOrFail($id);
+
+        $penjualan->update([
+            'status_pesanan' => 'selesai',
+            'karyawan_id'    => auth()->id(), // Catat siapa kasir yang proses
+        ]);
+
+        return back()->with('success', 'Pesanan online berhasil dikonfirmasi!');
+    }
 
 }
