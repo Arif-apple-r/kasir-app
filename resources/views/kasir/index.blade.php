@@ -157,9 +157,15 @@
             <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                     <h2 class="font-black text-2xl text-gray-800">Ringkasan Selesai</h2>
-                    <div class="bg-green-50 px-6 py-3 rounded-2xl">
-                        <span class="text-green-600 text-sm font-bold uppercase tracking-widest">Omzet Hari Ini</span>
-                        <div class="text-2xl font-black text-green-700">Rp {{ number_format($todayTotal, 0, ',', '.') }}</div>
+                    <div class="flex gap-3">
+                        <div class="bg-green-50 px-6 py-3 rounded-2xl">
+                            <span class="text-green-600 text-sm font-bold uppercase tracking-widest">Omzet Hari Ini</span>
+                            <div class="text-2xl font-black text-green-700">Rp {{ number_format($todayTotal, 0, ',', '.') }}</div>
+                        </div>
+                        <a href="{{ route('kasir.printAll') }}"
+                           class="px-6 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 flex items-center gap-2">
+                            🖨️ Print Semua
+                        </a>
                     </div>
                 </div>
 

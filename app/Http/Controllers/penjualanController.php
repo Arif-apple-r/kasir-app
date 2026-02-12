@@ -128,6 +128,17 @@ class PenjualanController extends Controller
         return view('penjualan.printAll', compact('penjualan'));
     }
 
+    public function printAllKasir()
+    {
+        $penjualan = Penjualan::selesai()
+            ->where('karyawan_id', Auth::id())
+            ->with('pelanggan')
+            ->latest()
+            ->get();
+
+        return view('penjualan.printAllKasir', compact('penjualan'));
+    }
+
     // Menampilkan halaman utama Kasir dengan 2 data: Produk (untuk POS) dan Pesanan Pending
     public function kasir()
     {

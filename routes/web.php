@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/kasir', [PenjualanController::class, 'store'])->name('kasir.store');
         Route::get('/kasir/penjualan/{id}', [PenjualanController::class, 'show'])->name('kasir.penjualan.show');
         Route::get('/kasir/penjualan/{id}/print', [PenjualanController::class, 'print'])->name('kasir.penjualan.print');
+        Route::get('/kasir/printAll', [PenjualanController::class, 'printAllKasir'])->name('kasir.printAll');
         Route::get('/kasir-row', function () {
             $produk = \App\Models\Produk::all();
             return view('kasir.partials.row', compact('produk'))->render();
